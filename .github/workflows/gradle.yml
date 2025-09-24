@@ -31,8 +31,8 @@ jobs:
 
       - name: Copy application.yml into runner
         run: |
-            touch ./main/java/src/main/resources/application.yml
-          cat > src/main/resources/application.yml <<'YAML' ${{ secrets.APPLICATION_YML }} YAML
+          mkdir -p src/main/resources
+          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
 
       - name: Build + Test(Gradle)
         if: ${{ hashFiles('**/build.gradle*') != '' }}
