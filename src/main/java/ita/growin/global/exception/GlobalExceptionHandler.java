@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     // NOT_FOUND 에러 처리
     @ExceptionHandler({NoSuchElementException.class, NoResourceFoundException.class})
     public ResponseEntity<APIResponse<Void>> handle404Exception(
-            RuntimeException exception, HttpServletRequest request) {
+            Exception exception, HttpServletRequest request) {
         if (request.getRequestURI().endsWith(".ico")) return null; // 불필요한 리소스 요청은 무시
 
         ErrorCode errorCode = CommonErrorCode.NOT_FOUND;
