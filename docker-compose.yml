@@ -1,6 +1,6 @@
 services:
   growin-api:
-    image: ghcr.io/ita-8th-team3/growin-server:latest
+    image: ghcr.io/growin-2025/growin-server:latest
     container_name: growin-api
     ports:
       - "8080:8080"
