@@ -19,6 +19,6 @@ public class Task {
     private Long id;
 
     @JoinColumn(name = "event_id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Event event;
 }
