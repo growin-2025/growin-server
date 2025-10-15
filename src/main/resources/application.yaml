@@ -1,3 +1,9 @@
 spring:
   application:
     name: growin
+
+  profiles:
+    group:
+      local: "local"
+      dev: "dev"
+      test: "test"
