@@ -35,6 +35,9 @@ dependencies {
     // database
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    // aws secrets manager
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-secrets-manager:3.1.0'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
