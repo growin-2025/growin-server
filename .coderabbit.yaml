@@ -8,6 +8,7 @@ reviews:
     ignore_title_keywords:
       - "no-coderabbit"
     base_branches:
+      - "develop"
       - "^feature/\\d*-.+" # `feature/숫자-`로 시작하는 브랜치만 리뷰
   high_level_summary: true           # PR 요약 생성
   sequence_diagrams: true            # 시퀀스 다이어그램 포함
