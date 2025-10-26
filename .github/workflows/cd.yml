@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: "docker-compose.yml,.env"
+          source: "docker-compose.yml,.env,nginx/"
           target: "/home/ubuntu/growin/"
 
       # EC2에서 도커 컨테이너 재배포
@@ -43,10 +43,10 @@ jobs:
             export GHCR_USERNAME=${{ github.actor }}  
             echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
 
-            sudo docker-compose pull
+            sudo docker compose pull
 
-            sudo docker-compose down || true
+            sudo docker compose down || true
 
-            sudo docker-compose up -d
+            sudo docker compose up -d
 
             sudo docker image prune -a -f
