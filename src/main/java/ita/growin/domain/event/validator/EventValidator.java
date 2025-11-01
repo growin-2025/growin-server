@@ -23,7 +23,9 @@ public class EventValidator {
 	}
 
 	public static void clearTimesIfAllDay(Event event) {
-		event.clearTimeIfAllDay();
+		if(Boolean.TRUE.equals(event.getAllDay())){
+			event.clearTimeIfAllDay();
+		}
 	}
 
 	private static void validateEventTime(Event event) {

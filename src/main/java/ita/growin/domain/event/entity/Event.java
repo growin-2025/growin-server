@@ -1,5 +1,6 @@
 package ita.growin.domain.event.entity;
 
+import ita.growin.domain.event.dto.request.EventReqDto;
 import ita.growin.domain.event.enums.RepeatType;
 import ita.growin.domain.task.entity.Task;
 import ita.growin.domain.user.entity.User;
@@ -28,7 +29,7 @@ public class Event {
     @Column(name = "event_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "event_title", nullable = false)
     private String title;
 
     @Column(nullable = false)
@@ -72,5 +73,21 @@ public class Event {
             this.startTime = null;
             this.endTime = null;
         }
+    }
+
+    public void update(EventReqDto request) {
+        this.title = request.title();
+        this.allDay = request.allDay();
+        this.startDate = request.startDate();
+        this.endDate = request.endDate();
+        this.startDay = request.startDay();
+        this.endDay = request.endDay();
+        this.startTime = request.startTime();
+        this.endTime = request.endTime();
+        this.repeatType = request.repeatType();
+        this.repeatCount = request.repeatCount();
+        this.repeatEndDate = request.repeatEndDate();
+
+        clearTimeIfAllDay();
     }
 }

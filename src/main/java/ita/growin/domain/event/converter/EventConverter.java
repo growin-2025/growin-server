@@ -2,6 +2,7 @@ package ita.growin.domain.event.converter;
 
 import ita.growin.domain.event.dto.request.EventReqDto;
 import ita.growin.domain.event.dto.response.EventDetailResDto;
+import ita.growin.domain.event.dto.response.EventListResDto;
 import ita.growin.domain.event.dto.response.EventResDto;
 import ita.growin.domain.event.entity.Event;
 import lombok.experimental.UtilityClass;
@@ -45,6 +46,18 @@ public class EventConverter {
 		return EventResDto.builder()
 			.eventId(event.getId())
 			.title(event.getTitle())
+			.startDate(event.getStartDate())
+			.endDate(event.getEndDate())
+			.build();
+	}
+
+	public static EventListResDto toEventListResponse(Event event) {
+		return EventListResDto.builder()
+			.eventId(event.getId())
+			.title(event.getTitle())
+			.allDay(event.getAllDay())
+			.startTime(event.getStartTime())
+			.endTime(event.getEndTime())
 			.build();
 	}
 }
