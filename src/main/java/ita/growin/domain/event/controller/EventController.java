@@ -28,7 +28,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/events")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Tag(name = "일정", description = "일정 관련 API")
 public class EventController {

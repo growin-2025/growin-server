@@ -42,7 +42,7 @@ public class EventService {
 	public EventResDto updateEvent(long eventId, @Valid EventReqDto request) {
 		Event event = eventRepository.findById(eventId)
 			.orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
-
+		// 수정 권한 검증
 		event.update(request);
 		return EventConverter.toResponse(event);
 	}
@@ -50,7 +50,7 @@ public class EventService {
 	public void deleteEvent(long eventId) {
 		Event event = eventRepository.findById(eventId)
 			.orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
-
+		// 삭제 권한 검증
 		eventRepository.delete(event);
 	}
 
