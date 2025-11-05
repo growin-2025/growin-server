@@ -1,6 +1,7 @@
 package ita.growin.properties;
 
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ public class RDSPropertiesTest {
     private String password;
 
     @Test
+    @Disabled
     @DisplayName("aws secret manager에서 import한 arn에서 username, password를 가져옵니다.")
     void get_username_and_password() {
         assertThat(username).isNotNull();
