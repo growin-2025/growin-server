@@ -3,15 +3,18 @@ package ita.growin.global.health.controller;
 import ita.growin.global.exception.BusinessException;
 import ita.growin.global.exception.errorcode.BusinessErrorCode;
 import ita.growin.global.response.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/test")
 public class HealthCheckController {
 
     @GetMapping("/health")
-    public APIResponse<?> test() {
-        return APIResponse.success("test");
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("UP");
     }
 
     @GetMapping("/business-error")
