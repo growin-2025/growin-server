@@ -45,6 +45,5 @@ jobs:
             export GHCR_USERNAME=${{ github.actor }}  
             echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
 
-          # 배포 로직 실행
             chmod +x deploy.sh
             ./deploy.sh
