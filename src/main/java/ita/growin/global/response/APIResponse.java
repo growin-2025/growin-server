@@ -16,7 +16,13 @@ public record APIResponse<T>(
 
     private static final String SUCCESS_MESSAGE = "요청이 성공적으로 처리되었습니다.";
 
-    // 성공응답
+    // 성공응답 (data X)
+    public static <T> APIResponse<T> success() {
+        return new APIResponse<>(
+                HttpStatus.OK.value(), null, SUCCESS_MESSAGE, LocalDateTime.now(), null);
+    }
+
+    // 성공응답 (data 존재)
     public static <T> APIResponse<T> success(T data) {
         return new APIResponse<>(
                 HttpStatus.OK.value(), null, SUCCESS_MESSAGE, LocalDateTime.now(), data);
