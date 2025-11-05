@@ -21,12 +21,10 @@ fi
 if docker ps --format '{{.Names}}' | grep -q "${APP_NAME}-blue"; then
   CURRENT="blue"
   NEXT="green"
-  CURRENT_PORT=$BLUE_PORT
   NEXT_PORT=$GREEN_PORT
 else
   CURRENT="green"
   NEXT="blue"
-  CURRENT_PORT=$GREEN_PORT
   NEXT_PORT=$BLUE_PORT
 fi
 
@@ -35,15 +33,15 @@ echo "Current Container : $CURRENT"
 echo "Next Container : $NEXT"
 
 echo "deploy $NEXT Container"
-docker compose -f docker-compose.common.yml -f docker-compose.${NEXT}.yml up
+docker compose -f docker-compose.common.yml -f docker-compose.${NEXT}.yml up -d
 
 
-echo "running health check"
+echo "running health check on port ${NEXT_PORT}"
 success=false
 for i in {1..20}; do
   sleep 3
   if curl -fs "http://localhost:${NEXT_PORT}/test/health" | grep -q "UP"; then
-    ehco "Health Check Passed"
+    echo "Health Check Passed"
     success=true
     break
   fi
@@ -62,11 +60,10 @@ fi
 # Reload Nginx
 echo "if success, switch nginx conf and stop old container"
   sudo sed -i "s/${APP_NAME}-${CURRENT}/${APP_NAME}-${NEXT}/" $NGINX_CONF
-  sudo sed -i "s/${CURRENT_PORT}/${NEXT_PORT}/" $NGINX_CONF
   sudo docker exec nginx nginx -s reload
 
 # Stop old container
-echo "==> Stopping old container ${APP_NAME}_${CURRENT}"
+echo "==> Stopping old container ${APP_NAME}-${CURRENT}"
 docker stop ${APP_NAME}-${CURRENT} || true
 docker rm ${APP_NAME}-${CURRENT} || true
 
