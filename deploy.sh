@@ -5,13 +5,15 @@ BLUE_PORT=8080
 GREEN_PORT=8081
 NGINX_CONF=/home/ubuntu/growin/nginx/default.conf
 
-
 echo "deploy start"
+
+echo "Pulling latest image..."
+docker pull ghcr.io/growin-2025/growin-server:latest
 
 if ! docker ps --format '{{.Names}}' | grep -q "${APP_NAME}-blue" && \
    ! docker ps --format '{{.Names}}' | grep -q "${APP_NAME}-green"; then
   echo "First deployment detected — starting blue container..."
-  docker compose -f docker/docker-compose.blue.yml up -d
+  docker compose -f docker-compose.common.yml -f docker-compose.blue.yml up -d
   exit 0
 fi
 
@@ -29,11 +31,11 @@ else
 fi
 
 
-ehco "Current Container : $CURRENT"
+echo "Current Container : $CURRENT"
 echo "Next Container : $NEXT"
 
 echo "deploy $NEXT Container"
-docker compose -f docker/docker-compose.${NEXT}.yml up -d
+docker compose -f docker-compose.common.yml -f docker-compose.${NEXT}.yml up
 
 
 echo "running health check"
@@ -45,14 +47,14 @@ for i in {1..20}; do
     success=true
     break
   fi
-  echo "Waiting for Service to be UP ... (${i}/10)"
+  echo "Waiting for Service to be UP ... (${i}/20)"
 done
 
 
 # 실행 실패 시 -> 롤백 진행 후 종료
 if [ "$success" = false ]; then
   echo "Health check failed! Rolling back..."
-  docker compose -f docker/docker-compose.${NEXT}.yml down
+  docker compose -f docker-compose.${NEXT}.yml down
   exit 1
 fi
 

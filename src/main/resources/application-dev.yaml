@@ -2,10 +2,9 @@ spring:
   config:
     activate:
       on-profile: "dev"
-    import: aws-secretsmanager:arn:aws:secretsmanager:ap-northeast-2:803356297373:secret:rds!db-9d0e355f-7879-4948-a7bf-f929ff772095-XkLF33
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DEV_DB_URL}
-    username: ${username}
-    password: ${password}
+    username: ${DEV_DB_USERNAME}
+    password: ${DEV_DB_PASSWORD}

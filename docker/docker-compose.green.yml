@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   growin-api-green:
     image: ghcr.io/growin-2025/growin-server:latest
@@ -9,8 +7,8 @@ services:
     env_file:
       - .env
     networks:
-      - app-network
+      - growin-network
 
 networks:
-  app-network:
+  growin-network:
     external: true
