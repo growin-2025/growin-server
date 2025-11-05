@@ -44,7 +44,7 @@ jobs:
             echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
 
             # 공통 컨테이너 실행
-            sudo docker compose -f docker-compose.common.yml up -d
+            sudo docker compose -f docker/docker-compose.common.yml up -d
             
             # 배포 로직 실행
             ./deploy.sh

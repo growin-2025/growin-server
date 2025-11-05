@@ -8,15 +8,15 @@ NGINX_CONF=/home/ubuntu/growin/nginx/default.conf
 
 echo "deploy start"
 
-if ! docker ps --format '{{.Names}}' | grep -q "${APP_NAME}_blue" && \
-   ! docker ps --format '{{.Names}}' | grep -q "${APP_NAME}_green"; then
+if ! docker ps --format '{{.Names}}' | grep -q "${APP_NAME}-blue" && \
+   ! docker ps --format '{{.Names}}' | grep -q "${APP_NAME}-green"; then
   echo "First deployment detected — starting blue container..."
-  docker-compose -f docker-compose.blue.yml up -d
+  docker compose -f docker/docker-compose.blue.yml up -d
   exit 0
 fi
 
 
-if docker ps | grep -q "${APP_NAME}-blue"; then
+if docker ps --format '{{.Names}}' | grep -q "${APP_NAME}-blue"; then
   CURRENT="blue"
   NEXT="green"
   CURRENT_PORT=$BLUE_PORT
@@ -33,7 +33,7 @@ ehco "Current Container : $CURRENT"
 echo "Next Container : $NEXT"
 
 echo "deploy $NEXT Container"
-docker-compose -f docker-compose.${NEXT}.yml up -d
+docker compose -f docker/docker-compose.${NEXT}.yml up -d
 
 
 echo "running health check"
@@ -52,7 +52,7 @@ done
 # 실행 실패 시 -> 롤백 진행 후 종료
 if [ "$success" = false ]; then
   echo "Health check failed! Rolling back..."
-  docker-compose -f docker-compose.${NEXT}.yml down
+  docker compose -f docker/docker-compose.${NEXT}.yml down
   exit 1
 fi
 
@@ -65,8 +65,8 @@ echo "if success, switch nginx conf and stop old container"
 
 # Stop old container
 echo "==> Stopping old container ${APP_NAME}_${CURRENT}"
-docker stop ${APP_NAME}_${CURRENT} || true
-docker rm ${APP_NAME}_${CURRENT} || true
+docker stop ${APP_NAME}-${CURRENT} || true
+docker rm ${APP_NAME}-${CURRENT} || true
 
 echo "Cleaning unused images"
 docker image prune -f >/dev/null 2>&1
