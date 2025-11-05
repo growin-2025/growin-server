@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  growin-api-blue:
+    image: ghcr.io/growin-2025/growin-server:latest
+    container_name: growin-api-blue
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
