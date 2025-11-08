@@ -11,8 +11,8 @@ import lombok.Getter;
 @Getter
 public class KakaoSignupRequest {
 
-    @NotBlank(message = "Access Token은 필수입니다.")
-    private String accessToken;
+    @NotBlank(message = "Code는 필수입니다.")
+    private String code;
 
     @NotNull(message = "직업 정보는 필수입니다.")
     private Work work;

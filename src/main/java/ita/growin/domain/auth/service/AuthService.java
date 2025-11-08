@@ -39,7 +39,7 @@ public class AuthService {
     @Transactional
     public AuthResponse kakaoSignup(KakaoSignupRequest request) {
         // 카카오 API로 유저 정보 조회
-        KakaoUserInfo kakaoUser = kakaoApiClient.getUserInfo(request.getAccessToken());
+        KakaoUserInfo kakaoUser = kakaoApiClient.getUserInfo(request.getCode());
 
         // 이메일 중복 체크
         if (userRepository.findByEmail(kakaoUser.getKakaoAccount().getEmail()).isPresent()) {
