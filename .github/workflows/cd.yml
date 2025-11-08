@@ -1,8 +1,10 @@
 name: CD
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
 
 jobs:
   deploy:
@@ -25,7 +27,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: "docker/,.env,nginx/,deploy.sh"
+          source: "docker/*,.env,nginx/,deploy.sh"
           target: "/home/ubuntu/growin/"
 
       # EC2에서 도커 컨테이너 재배포
@@ -43,8 +45,5 @@ jobs:
             export GHCR_USERNAME=${{ github.actor }}  
             echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
 
-            # 공통 컨테이너 실행
-            sudo docker compose -f docker/docker-compose.common.yml up -d
-            
-            # 배포 로직 실행
+            chmod +x deploy.sh
             ./deploy.sh
