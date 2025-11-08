@@ -1,0 +1,64 @@
+package ita.growin.domain.task.dto.request;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import ita.growin.domain.event.entity.Event;
+import ita.growin.domain.event.enums.RepeatType;
+import ita.growin.domain.task.entity.Task;
+import ita.growin.domain.task.enums.TaskType;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDate;
+
+@Schema(description = "할일 생성 요청 DTO")
+public record CreateTaskReqDto(
+
+        @Schema(description = "할 일 제목", example = "강아지 산책")
+        @NotBlank(message = "제목은 빈칸일 수 없습니다.")
+        String title,
+
+        @Schema(description = "할 일 타입", example = "IN_EVENT")
+        @NotBlank(message = "일정 내의 할일인지(IN_EVENT), 기간 지정인지(SCHEDULED), 기간 미지정인지(UNSCHEDULED) 입력해주세요")
+        TaskType taskType,
+
+        @Schema(description = "반복 단위", example = "NONE, DAY, WEEK ...")
+        @Nullable
+        RepeatType repeatType,
+
+        @Schema(description = "반복이 시작되는 날짜 지정", example = "2025-11-01")
+        @Nullable
+        LocalDate startDate,
+
+        @Schema(description = "반복이 끝나는 날짜 지정", example = "2025-11-08")
+        @Nullable
+        LocalDate endDate,
+
+        @Schema(description = "할 일이 일정에 포함될 때의 일정ID", example = "1")
+        @Nullable
+        Long eventId
+) {
+
+    public Task convertAsInEvent(Event event) {
+        return Task.builder()
+                .title(title)
+                .taskType(TaskType.IN_EVENT)
+                .event(event)
+                .build();
+    }
+
+    public Task convertAsScheduled() {
+        return Task.builder()
+                .title(title)
+                .taskType(TaskType.SCHEDULED)
+                .repeatType(repeatType)
+                .endDate(endDate)
+                .build();
+    }
+
+    public Task convertAsUnscheduled() {
+        return Task.builder()
+                .title(title)
+                .taskType(TaskType.UNSCHEDULED)
+                .build();
+    }
+}
