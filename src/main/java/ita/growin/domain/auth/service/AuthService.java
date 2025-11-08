@@ -38,23 +38,18 @@ public class AuthService {
 
     @Transactional
     public AuthResponse kakaoSignup(KakaoSignupRequest request) {
-        // 1. 카카오 API로 유저 정보 조회
+        // 카카오 API로 유저 정보 조회
         KakaoUserInfo kakaoUser = kakaoApiClient.getUserInfo(request.getAccessToken());
 
-        // 2. 이메일 중복 체크
+        // 이메일 중복 체크
         if (userRepository.findByEmail(kakaoUser.getKakaoAccount().getEmail()).isPresent()) {
             throw new RuntimeException("이미 가입된 이메일입니다.");
         }
 
-        // 3. 카카오 ID 중복 체크
-        if (userRepository.findByKakaoId(kakaoUser.getId()).isPresent()) {
-            throw new RuntimeException("이미 가입된 카카오 계정입니다.");
-        }
-
-        // 4. 닉네임 랜덤 생성
+        // 닉네임 랜덤 생성
         String randomNickname = nicknameGenerator.generate();
 
-        // 5. User 엔티티 생성 및 저장
+        // User 엔티티 생성 및 저장
         User user = User.builder()
                 .email(kakaoUser.getKakaoAccount().getEmail())
                 .nickname(randomNickname)
@@ -67,14 +62,14 @@ public class AuthService {
 
         userRepository.save(user);
 
-        // 6. JWT 토큰 생성
+        // JWT 토큰 생성
         String accessToken = jwtTokenProvider.generateAccessToken(user);
         String refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
-        // 7. Refresh Token 저장
+        // Refresh Token 저장
         saveRefreshToken(user.getUserId(), refreshToken);
 
-        // 8. 응답 생성
+        // 응답 생성
         UserDto userDto = UserDto.from(user);
 
         return AuthResponse.builder()
@@ -92,7 +87,7 @@ public class AuthService {
         KakaoApiClient.KakaoUserInfo kakaoUser = kakaoApiClient.getUserInfo(request.getAccessToken());
 
         // 2. DB에서 유저 찾기
-        User user = userRepository.findByKakaoId(kakaoUser.getId())
+        User user = userRepository.findByEmail(kakaoUser.getKakaoAccount().getEmail())
                 .orElseThrow(() -> new RuntimeException("가입되지 않은 사용자입니다."));
 
         // 3. 탈퇴한 사용자 체크
