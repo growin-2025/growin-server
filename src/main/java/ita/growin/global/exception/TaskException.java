@@ -13,7 +13,7 @@ public class TaskException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public static EventException of(ErrorCode errorCode) {
-        return new EventException(errorCode);
+    public static TaskException of(ErrorCode errorCode) {
+        return new TaskException(errorCode);
     }
 }

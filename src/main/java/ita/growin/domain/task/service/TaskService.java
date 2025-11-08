@@ -91,7 +91,7 @@ public class TaskService {
         assert req.eventId() != null;
         Event event = eventRepository
                 .findById(req.eventId())
-                .orElseThrow();
+                .orElseThrow(() -> new BusinessException(EventErrorCode.EVENT_NOT_FOUND));
         taskRepository.save(req.convertAsInEvent(event));
     }
 

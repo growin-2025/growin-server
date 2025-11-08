@@ -55,13 +55,13 @@ public class TaskController {
         이 또한 eventId로 일정에 포함된 할 일인지 구분하게 됩니다.
     """)
     public APIResponse<?> deleteTask(
-            @RequestParam("eventId") @Nullable Long eventId,
+            @RequestParam(value = "eventId", required = false) Long eventId,
             @PathVariable Long taskId) {
         taskService.deleteTask(eventId, taskId);
         return APIResponse.success();
     }
 
-    @GetMapping("/tasks/today")
+    @GetMapping("/today")
     @Operation(summary = "오늘 할 일 조회",
     description = """
             오늘 할 일을 조회합니다. 10개씩 Slice로 데이터가 순서대로 조회됩니다 (생성순).
@@ -71,7 +71,7 @@ public class TaskController {
         return APIResponse.success(taskService.getTodayTasks(pageable));
     }
 
-    @GetMapping("/tasks/someday")
+    @GetMapping("/someday")
     @Operation(summary = "언젠가 할 일 조회",
             description = """
             언젠가 할 일을 조회합니다. 10개씩 Slice로 데이터가 순서대로 조회됩니다 (생성순).
